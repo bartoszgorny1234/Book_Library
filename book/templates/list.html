@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{% block content %}
+
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+
+
+
+
+<div class="panel panel-default">
+    <div class = "panel-heading">List of Books</div>
+    <div class = "panel-heading">Ilość filmów {{books|length}}</div>
+    <div class="panel-body">
+        <form method="GET">
+            {{ filter.form }}
+            <button type="submit" class="btn btn_primary">Search</button>
+        </form>
+        <ul>
+            {% for book in filter.qs %}
+            <li>
+                Title: {{ book.title|upper }}
+                <br/>Published Date: {{ book.published_date }}
+                <br/>Page Count: {{ book.page_count }}
+                <br/>Language: {{ book.language }}
+                <br/>Authors : [{% for author in book.authors.all %}{{ author.name }}, {% endfor %}]
+                <br/>Industry Identifies: [{% for identify in book.industry_identifies.all %}{{ identify.type }}: {{ identify.identifier }}, {% endfor %}]
+                <br/>Image Links:{{ book.image_links.small_thumbnail }} , {{ book.image_links.thumbnail }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

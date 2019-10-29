@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% block content %}
+<p>
+    Create new object:
+</p>
+<div class="panel panel-default">
+        <form class="well form" action="" method="POST">
+            <div class="row justify-content-center">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </div>
+        <input type="submit" value="Create">
+        </form>
+</div>
+{% endblock %}
