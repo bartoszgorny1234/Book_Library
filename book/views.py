@@ -11,10 +11,12 @@ from .models import Book, Author, IndustryIdentifies, ImageLinks
 from .forms import BookForm, AuthorForm, ImageLinksForm, IndustryIdentifiesForm
 from .filters import BookFilter
 
+
 class BookListView(ListView):
     model = Book
     template_name = "list.html"
     context_object_name = "books"
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

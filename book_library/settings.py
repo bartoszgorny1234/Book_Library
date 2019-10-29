@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'book',
-    'bootstrap4',
     'bootstrap3',
     'rest_framework',
     'django_filters',
