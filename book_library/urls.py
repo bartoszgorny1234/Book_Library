@@ -22,6 +22,7 @@ router = routers.DefaultRouter()
 router.register(r'books', BooksViewSet)
 router.register(r'authors', AuthorsViewSet)
 router.register(r'identifiers', IndustryIdentifyViewSet)
+router.register(r'identifiers', ImageLinksViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
