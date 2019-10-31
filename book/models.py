@@ -21,11 +21,11 @@ class IndustryIdentifies(models.Model):
 class Book(models.Model):
     id = models.CharField(max_length=16, primary_key=True, unique=True, null=False)
     title = models.CharField(max_length=128, null=False)
-    authors = models.ManyToManyField(Author)
-    published_date = PartialDateField()
-    industry_identifies = models.ManyToManyField(IndustryIdentifies)
-    page_count = models.IntegerField(null=False)
-    image_links = models.OneToOneField(ImageLinks, on_delete=models.CASCADE)
+    authors = models.ManyToManyField(Author, blank=True)
+    published_date = PartialDateField(blank=True)
+    industry_identifies = models.ManyToManyField(IndustryIdentifies, blank=True)
+    page_count = models.IntegerField(null=True)
+    image_links = models.OneToOneField(ImageLinks, on_delete=models.CASCADE, blank=True)
     language = models.CharField(max_length=3, null=False)
 
     def __str__(self):

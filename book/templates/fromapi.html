@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+
+<div class="panel panel-default">
+    <div class = "panel-heading">Books from Api</div>
+  <form class = "panel-heading" method="get">
+    <input type="text" name="query">
+    <button type="submit">search in Api</button>
+  </form>
+  {% if response %}
+    {{ response }}
+  {% endif %}
+</div>
+{% endblock %}

@@ -6,7 +6,7 @@ import datetime
 
 
 class BookFilter(django_filters.FilterSet):
-    published_date = django_filters.DateFromToRangeFilter(field_name='published_date', type=datetime.date)
+    published_date = django_filters.DateFromToRangeFilter(field_name='published_date')
     class Meta:
         model = Book
         fields = {

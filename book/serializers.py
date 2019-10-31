@@ -10,7 +10,7 @@ class AuthorsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
-        fields = ("name")
+        fields = ["name"]
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ImageLinks
-        fields = ("smallThumbnail", "thumbnail")
+        fields = ["small_thumbnail", "thumbnail"]
 
 
 class IdentifiesSerializer(serializers.ModelSerializer):
@@ -30,17 +30,15 @@ class IdentifiesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IndustryIdentifies
-        fields = ("type", "identifier")
+        extra = 2
+        fields = ["type", "identifier"]
 
 
 class BookSerializer(serializers.ModelSerializer):
     """
     Serializing all the Books
     """
-    authors = AuthorsSerializer(many=True)
-    image_links = ImageSerializer()
-    industry_identifies = IndustryIdentifies(many=True)
 
     class Meta:
         model = Book
-        fields = ("id", "title", "authors", "publishedDate", "industryIdentifies", "page_count", "imageLinks", "language")
+        fields = ["id", "title", "page_count", "language", "authors", "published_date", "industry_identifies", "image_links",]
