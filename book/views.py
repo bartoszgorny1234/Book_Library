@@ -59,61 +59,54 @@ def from_api(request):
     if 'query' in request.GET:
         query = request.GET['query']
         response = requests.get("https://www.googleapis.com/books/v1/volumes?q=%s" % query).json()['items']
-    for books in response:
-        try:
-            element1 = books['volumeInfo']
-            id_ = books['id']
-            title = element1['title']
-            language = element1['language']
-            published_date = element1['publishedDate']
-            book = Book(id=id_, title=title, language=language, published_date=published_date)
-            book.save()
+        for books in response:
             try:
-                small_th = element1['imageLinks']['smallThumbnail']
-                th = element1['imageLinks']['thumbnail']
-                imageLink = ImageLinks(small_thumbnail=small_th, thumbnail=th)
-                imageLink.save()
-                book.image_links = imageLink
-                book.save()
-            except:
+                element1 = books['volumeInfo']
+                id_ = books['id']
+                title = element1['title']
+                language = element1['language']
+                published_date = element1['publishedDate']
                 try:
                     small_th = element1['imageLinks']['smallThumbnail']
                     th = element1['imageLinks']['thumbnail']
+                    imageLink = ImageLinks(small_thumbnail=small_th, thumbnail=th)
+                    imageLink.save()
+                except:
+                    small_th = element1['imageLinks']['smallThumbnail']
+                    th = element1['imageLinks']['thumbnail']
                     imageLink = ImageLinks.objects.get(small_thumbnail=small_th, thumbnail=th)
-                    book.image_links = imageLink
+
+                book = Book(id=id_, title=title, language=language, published_date=published_date, image_links=imageLink)
+                book.save()
+                try:
+                    page_count = element1['pageCount']
+                    book.page_count = page_count
                     book.save()
                 except:
                     pass
 
-            try:
-                page_count = element1['pageCount']
-                book.page_count = page_count
-                book.save()
+                for author in element1['authors']:
+                    name = author
+                    try:
+                        auth = Author(name=name)
+                        auth.save()
+                        book.authors.add(auth)
+                    except:
+                        auth = Author.objects.get(name=name)
+                        book.authors.add(auth)
+
+                for identifier in element1['industryIdentifiers']:
+                    type_ = identifier['type']
+                    number = identifier['identifier']
+                    try:
+                        idntf = IndustryIdentifies(type=type_, identifier=number)
+                        idntf.save()
+                        book.industry_identifies.add(idntf)
+                    except:
+                        idntf = IndustryIdentifies.objects.get(type=type_, identifier=number)
+                        book.industry_identifies.add(idntf)
             except:
                 pass
-
-            for author in element1['authors']:
-                name = author
-                try:
-                    auth = Author(name=name)
-                    auth.save()
-                    book.authors.add(auth)
-                except:
-                    auth = Author.objects.get(name=name)
-                    book.authors.add(auth)
-
-            for identifier in element1['industryIdentifiers']:
-                type_ = identifier['type']
-                number = identifier['identifier']
-                try:
-                    idntf = IndustryIdentifies(type=type_, identifier=number)
-                    idntf.save()
-                    book.industry_identifies.add(idntf)
-                except:
-                    idntf = IndustryIdentifies.objects.get(type=type_, identifier=number)
-                    book.industry_identifies.add(idntf)
-        except:
-            pass
 
     return render(request, 'fromapi.html', {'response': response})
 

@@ -26,7 +26,7 @@ class Book(models.Model):
     industry_identifies = models.ManyToManyField(IndustryIdentifies, blank=True)
     page_count = models.IntegerField(null=True)
     image_links = models.OneToOneField(ImageLinks, on_delete=models.CASCADE, blank=True)
-    language = models.CharField(max_length=3, null=False)
+    language = models.CharField(max_length=3, null=True)
 
     def __str__(self):
         return self.title
